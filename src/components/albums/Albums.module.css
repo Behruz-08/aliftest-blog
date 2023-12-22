@@ -1,0 +1,150 @@
+.Albums__wrapper {
+  max-width: 1400px;
+  width: 100%;
+  height: 100%;
+
+  background: linear-gradient(
+    120deg,
+    rgba(248, 162, 97, 0.653),
+    rgba(248, 210, 97, 0.565),
+    rgba(249, 135, 104, 0.621)
+  );
+}
+.Albums__container {
+  max-width: 1200px;
+  width: 100%;
+
+  text-align: center;
+  align-items: center;
+}
+
+.Albums__title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4vw;
+  font-weight: 600;
+}
+.Albums__back {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: -50px;
+}
+.Albums__back button {
+  width: 100px;
+  height: 50px;
+  border-radius: 30px;
+  border: none;
+  background: linear-gradient(
+    120deg,
+    rgba(163, 140, 245, 0.896) 10%,
+    rgba(204, 150, 226, 0.821) 36%,
+    rgba(174, 160, 243, 0.823) 70%,
+    rgba(203, 146, 239, 0.788) 72%
+  );
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Albums__link {
+  font-style: italic;
+  font-size: 20px;
+  font-weight: 500;
+  color: rgb(246, 228, 195);
+}
+.Albums__inputs {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+.Albums__ul {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.Albums__paginations {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.Albums__paginations button {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
+  border: none;
+}
+
+.Albums__filter input {
+  width: 50vw;
+  height: 10vh;
+  border-radius: 50px;
+  border: none;
+  font-size: 4vh;
+}
+.Albums__add input {
+  width: 40vw;
+  height: 10vh;
+  border-radius: 140px;
+  border: none;
+  font-size: 4vh;
+}
+
+.Albums__add button {
+  width: 15vw;
+  height: 10vh;
+  border-radius: 100px;
+  border: none;
+}
+
+.Albums__add {
+  padding: 20px;
+  margin-top: -50px;
+  border: none;
+}
+
+.photolist__container {
+  max-width: 1200px;
+  width: 100%;
+}
+
+.photos__container {
+  width: 200px;
+  justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.photos__photo {
+  width: 250px;
+  height: 150px;
+}
+
+.photos__title {
+  font-size: 1vw;
+  display: flex;
+  flex-wrap: wrap;
+  width: 150px;
+  height: 80px;
+}
+
+.photolist__container {
+  width: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: auto;
+}
