@@ -12,13 +12,12 @@ import {
   DialogContent,
   DialogActions,
 } from "@material-ui/core";
-import { buildTimeValue } from "@testing-library/user-event/dist/utils";
 import CreatePost from "../createpost/CreatePost";
 
 const useStyles = makeStyles((theme) => ({
   select: {
-    fontSize: "0.8rem", // Это значение можно настроить по вашему желанию
-    padding: theme.spacing(1), // Это значение можно настроить по вашему желанию
+    fontSize: "0.8rem",
+    padding: theme.spacing(1),
     width: "12rem",
     height: "2rem",
     marginLeft: "10rem",
@@ -26,16 +25,15 @@ const useStyles = makeStyles((theme) => ({
   container: {
     padding: theme.spacing(2),
     margin: theme.spacing(4),
-    boxShadow: "0 0 15px 1px rgba(0, 0, 0, 0.5)", // Здесь указаны значения для box-shadow
+    boxShadow: "0 0 15px 1px rgba(0, 0, 0, 0.5)",
   },
   textField: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1),
   },
   postContainer: {
     marginBottom: theme.spacing(4),
     padding: theme.spacing(2),
-
-    boxShadow: "0 0 15px 1px rgba(0, 0, 0, 0.3)", // Здесь указаны значения для box-shadow
+    boxShadow: "0 0 15px 1px rgba(0, 0, 0, 0.3)",
   },
   button: {
     marginRight: theme.spacing(3),
@@ -43,34 +41,43 @@ const useStyles = makeStyles((theme) => ({
   deleteButton: {
     color: "red",
   },
+  smallButton: {
+    width: "100px",
+    height: "32px",
+    fontSize: "0.8rem",
+    padding: "6px 12px",
+  },
 }));
 
-function PostList({ posts, handleAddPost }) {
+function PostList({ posts }) {
+  const [showModal, setShowModal] = useState(false);
   const [filter, setFilter] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(10);
   const [deleteConfirmation, setDeleteConfirmation] = useState(null);
-
-  // const filteredPosts = posts.filter((post) =>
-  //   post.title.toLowerCase().includes(filter.toLowerCase())
-  // );
 
   const classes = useStyles();
 
   const filteredPosts = posts
     .filter((post) => post.title.toLowerCase().includes(filter.toLowerCase()))
-    .slice(0, itemsPerPage); // Ограничить посты выбранным количеством элементов на странице
+    .slice(0, itemsPerPage);
 
   const handleFilterChange = (event) => {
     setFilter(event.target.value);
   };
 
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const indexOfLastPost = currentPage * itemsPerPage;
+  const indexOfFirstPost = indexOfLastPost - itemsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
-  // Обработчик события для изменения текущей страницы
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -80,7 +87,6 @@ function PostList({ posts, handleAddPost }) {
   };
 
   const handleDeleteConfirmation = () => {
-    // handleDeletePost(deleteConfirmation);
     setDeleteConfirmation(null);
   };
 
@@ -91,7 +97,7 @@ function PostList({ posts, handleAddPost }) {
   return (
     <div className={classes.container}>
       <Grid container spacing={2} alignItems="center">
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <TextField
             className={classes.textField}
             type="text"
@@ -100,9 +106,8 @@ function PostList({ posts, handleAddPost }) {
             onChange={handleFilterChange}
             fullWidth
           />
-          <CreatePost addPost={handleAddPost} />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <Select
             value={itemsPerPage}
             onChange={(event) => setItemsPerPage(Number(event.target.value))}
@@ -116,7 +121,14 @@ function PostList({ posts, handleAddPost }) {
             <MenuItem value={50}>50</MenuItem>
           </Select>
         </Grid>
+        <Grid item xs={12} sm={4}>
+          {/* <Button variant="contained" color="primary" onClick={handleOpenModal}>
+            Создать пост
+          </Button> */}
+          <CreatePost />
+        </Grid>
       </Grid>
+
       {filteredPosts.map((post) => (
         <div key={post.id} className={classes.postContainer}>
           <h3>{post.title}</h3>
@@ -130,6 +142,7 @@ function PostList({ posts, handleAddPost }) {
           </button>
         </div>
       ))}
+
       {currentPosts.map((post) => (
         <div key={post.id} className={classes.postContainer}>
           <h3>{post.title}</h3>
@@ -137,28 +150,28 @@ function PostList({ posts, handleAddPost }) {
           <Link to={`/posts/${post.id}`}>Подробнее</Link>
         </div>
       ))}
+
+      <Dialog
+        open={Boolean(deleteConfirmation)}
+        onClose={handleCloseConfirmation}
+      >
+        <DialogTitle>Удаление поста</DialogTitle>
+        <DialogContent>
+          <p>Вы уверены, что хотите удалить этот пост?</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmation} color="primary">
+            Отмена
+          </Button>
+          <Button onClick={handleDeleteConfirmation} color="primary">
+            Удалить
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <div>
-        <Dialog
-          open={Boolean(deleteConfirmation)}
-          onClose={handleCloseConfirmation}
-        >
-          <DialogTitle>Удаление поста</DialogTitle>
-          <DialogContent>
-            <p>Вы уверены, что хотите удалить этот пост?</p>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseConfirmation} color="primary">
-              Отмена
-            </Button>
-            <Button onClick={handleDeleteConfirmation} color="primary">
-              Удалить
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </div>
-      <div>
-        {Array.from({ length: Math.ceil(posts.length / postsPerPage) }).map(
-          (page, index) => (
+        {Array.from({ length: Math.ceil(posts.length / itemsPerPage) }).map(
+          (currentPage, index) => (
             <Button
               key={index}
               className={classes.button}

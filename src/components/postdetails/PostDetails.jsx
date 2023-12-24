@@ -10,11 +10,10 @@ function PostDetails() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const response = await fetch(
+        const response = await axios.get(
           `https://jsonplaceholder.typicode.com/posts/${id}`
         );
-        const data = await response.json();
-        setPost(data);
+        setPost(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -25,7 +24,10 @@ function PostDetails() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`);
+      const response = await axios.delete(
+        `https://jsonplaceholder.typicode.com/posts/${id}`
+      );
+      console.log("Delete response:", response.data); // Check the response
       navigate("/posts");
     } catch (error) {
       console.error("Error deleting post:", error);

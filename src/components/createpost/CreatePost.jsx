@@ -32,12 +32,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CreatePost = ({ addPost }) => {
+const CreatePost = ({ posts }) => {
   const classes = useStyles();
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [showModal, setShowModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
 
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -47,16 +51,17 @@ const CreatePost = ({ addPost }) => {
     setBody(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const newPost = {
       title,
       body,
     };
-    addPost(newPost);
-    setTitle("");
-    setBody("");
-    setShowModal(true);
+    await posts(newPost);
+    setTitle(" ");
+    setBody(" ");
+    setShowModal(false); // Закрываем модальное окно только после успешного создания поста
+    navigate("/posts");
   };
 
   const handleCloseModal = () => {
@@ -66,64 +71,71 @@ const CreatePost = ({ addPost }) => {
 
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
-      <Button
-        className={classes.button}
-        variant="contained"
-        color="primary"
-        type="submit"
-      >
-        Add Post
+      <Button variant="contained" color="primary" onClick={handleOpenModal}>
+        Создать пост
       </Button>
 
-      <Modal
-        className={classes.modal}
-        open={showModal}
-        onClose={handleCloseModal}
-      >
-        <div className={classes.modalContent}>
-          <h2>Добавьте пост !</h2>
-          <div>
+      {showModal && (
+        <Modal
+          className={classes.modal}
+          open={showModal}
+          onClose={handleCloseModal}
+        >
+          <div className={classes.modalContent}>
+            <h2>Добавьте пост!</h2>
             <div>
-              <TextField
-                className={classes.textField}
-                type="text"
-                label="Title"
-                value={title}
-                onChange={handleTitleChange}
-                required
-              />
+              <div>
+                {" "}
+                <TextField
+                  className={classes.textField}
+                  type="text"
+                  label="Title"
+                  value={title}
+                  onChange={handleTitleChange}
+                  required
+                />
+              </div>
+              <div>
+                <TextField
+                  className={classes.textField}
+                  type="text"
+                  label="Body"
+                  value={body}
+                  onChange={handleBodyChange}
+                  required
+                  multiline
+                  rows={4}
+                />
+              </div>
+              {/* <Button
+                 className={classes.button}
+                 variant="contained"
+                color="primary"
+                type="submit"
+               >
+                Сохранить
+              </Button> */}
+              <Button
+                className={classes.button}
+                variant="contained"
+                color="primary"
+                type="submit"
+                // onSubmit={handleSubmit}
+              >
+                Сохранить
+              </Button>
             </div>
-            <div>
-              <TextField
-                className={classes.textField}
-                type="text"
-                label="Body"
-                value={body}
-                onChange={handleBodyChange}
-                required
-                multiline
-                rows={4}
-              />
-            </div>
+            {/* <p>Your new post has been added.</p> */}
             <Button
-              className={classes.button}
               variant="contained"
               color="primary"
-              type="submit"
+              onClick={handleCloseModal}
             >
-              Сохранить
+              X
             </Button>
           </div>
-          {/* <p>Your new post has been added.</p> */}
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleCloseModal}
-          >
-            X
-          </Button>
-        </div>
-      </Modal>
+        </Modal>
+      )}
     </form>
   );
 };
